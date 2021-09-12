@@ -1,16 +1,21 @@
-# flutter_future_jobs
+# Flutter Future Job Mobile App
 
-A new Flutter project.
+Application For Looking a new job
 
-## Getting Started
+Still Prototype App
 
-This project is a starting point for a Flutter application.
+![alt text](https://i.ibb.co/GRsVm7m/Github-Thumbnail-1.png)
 
-A few resources to get you started if this is your first Flutter project:
+## Dependancies
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+  cupertino_icons: ^1.0.2
+  
+  google_fonts: ^2.1.0
+  
+  email_validator: ^2.0.1
+  
+  flutter_launcher_icons: ^0.9.2
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Credit
+
+Thanks For [a link](pixel.buildwithangga.com) to provide the UI Design
