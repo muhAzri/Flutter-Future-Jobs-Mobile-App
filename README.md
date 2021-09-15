@@ -16,6 +16,14 @@ Still Prototype App
   
   flutter_launcher_icons: ^0.9.2
 
+## Updates
+  
+  Add Provider
+  
+  Add Sign-in & Sign-up API
+  
+  Add Content API
+
 ## Credit
 
 Thanks For [a link](pixel.buildwithangga.com) to provide the UI Design
