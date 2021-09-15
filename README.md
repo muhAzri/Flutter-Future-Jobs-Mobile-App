@@ -26,4 +26,4 @@ Still Prototype App
 
 ## Credit
 
-Thanks For [a link](pixel.buildwithangga.com) to provide the UI Design
+Thanks For [pixel.buildwithangga.com](pixel.buildwithangga.com) to provide the UI Design
