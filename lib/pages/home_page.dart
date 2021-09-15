@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_future_jobs/models/category_model.dart';
+import 'package:flutter_future_jobs/models/job_model.dart';
+import 'package:flutter_future_jobs/provider/category_provider.dart';
+import 'package:flutter_future_jobs/provider/job_provider.dart';
+import 'package:flutter_future_jobs/provider/user_provider.dart';
 import 'package:flutter_future_jobs/theme.dart';
 import 'package:flutter_future_jobs/widgets/category_card.dart';
 import 'package:flutter_future_jobs/widgets/custom_list.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    var userProvider = Provider.of<UserProvider>(context);
+    var categoryProvider = Provider.of<CategoryProvider>(context);
+    var jobProvider = Provider.of<JobProvider>(context);
+
     Widget header() {
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 30),
@@ -23,7 +33,7 @@ class HomePage extends StatelessWidget {
                     height: 2,
                   ),
                   Text(
-                    'Muhammad Azri',
+                    userProvider.user.name,
                     style: blackTextStyle.copyWith(
                         fontWeight: semibold, fontSize: 24),
                   )
@@ -42,66 +52,76 @@ class HomePage extends StatelessWidget {
 
     Widget body() {
       return Container(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 16),
+              child: Text(
                 'Hot Categories',
                 style: blackTextStyle.copyWith(fontSize: 16),
               ),
-              SizedBox(
-                height: 16,
-              ),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    CategoryCard(
-                        text: 'Website\nDeveloper',
-                        imageurl: 'assets/card_category1.png'),
-                    SizedBox(width: 16),
-                    CategoryCard(
-                        text: 'Mobile\nDeveloper',
-                        imageurl: 'assets/card_category2.png'),
-                    SizedBox(width: 16),
-                    CategoryCard(
-                        text: 'App\nDesigner',
-                        imageurl: 'assets/card_category3.png'),
-                    SizedBox(width: 16),
-                    CategoryCard(
-                        text: 'Content\nWriter',
-                        imageurl: 'assets/card_category4.png'),
-                    SizedBox(width: 16),
-                    CategoryCard(
-                        text: 'Video\nGrapher',
-                        imageurl: 'assets/card_category5.png'),
-                    SizedBox(width: 16),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 16,
-              ),
-              Text(
-                'Just Posted',
-                style: blackTextStyle.copyWith(fontSize: 16),
-              ),
-              CustomList(
-                  imageurl: 'assets/company1.png',
-                  jobTitle: 'Front-End Developer',
-                  company: 'Google'),
-              CustomList(
-                  imageurl: 'assets/company2.png',
-                  jobTitle: 'UI Designer',
-                  company: 'Instagram'),
-              CustomList(
-                  imageurl: 'assets/company3.png',
-                  jobTitle: 'Data Scientist',
-                  company: 'Facebook'),
-            ],
-          ),
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            FutureBuilder<List<CategoryModel>>(
+                future: categoryProvider.getCategories(),
+                builder: (context, AsyncSnapshot snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    int index = -1;
+
+                    return SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                            children: snapshot.data.map<Widget>((category) {
+                          index++;
+
+                          return Container(
+                            margin: EdgeInsets.only(left: index == 0 ? 16 : 0),
+                            child: CategoryCard(category)
+                          );
+                        }).toList()));
+                  }
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }),
+          ],
+        ),
+      );
+    }
+
+    Widget justPosted() {
+      return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: 16,
+            ),
+            Text(
+              'Just Posted',
+              style: blackTextStyle.copyWith(fontSize: 16),
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            FutureBuilder<List<JobModel>>(
+              future: jobProvider.getJobs(),
+              builder: (context, AsyncSnapshot snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return Column(
+                    children: snapshot.data
+                        .map<Widget>((job) => CustomList(job))
+                        .toList(),
+                  );
+                }
+                return Center(child: CircularProgressIndicator());
+              },
+            )
+          ],
         ),
       );
     }
@@ -111,13 +131,7 @@ class HomePage extends StatelessWidget {
         child: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              header(),
-              SizedBox(
-                height: 30,
-              ),
-              body()
-            ],
+            children: [header(), body(), justPosted()],
           ),
         ),
       ),

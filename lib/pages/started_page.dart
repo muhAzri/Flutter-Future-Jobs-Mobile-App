@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_future_jobs/pages/signin_page.dart';
 import 'package:flutter_future_jobs/theme.dart';
 
 class GetStartedPage extends StatelessWidget {
@@ -49,7 +48,16 @@ class GetStartedPage extends StatelessWidget {
                                 backgroundColor: whiteColor,
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(66))),
-                            onPressed: () {},
+                            onPressed: () {
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //       builder: (context) => SignUpPage()
+                              //   )
+                              // );
+                              Navigator.pushNamedAndRemoveUntil(
+                                  context, '/sign-up', (route) => false);
+                            },
                             child: Text(
                               'Get Started',
                               style: blueTextStyle.copyWith(fontWeight: medium),
@@ -61,6 +69,7 @@ class GetStartedPage extends StatelessWidget {
                       Container(
                         width: 200,
                         height: 45,
+                        // ignore: deprecated_member_use
                         child: OutlineButton(
                             borderSide: BorderSide(
                               color: whiteColor,
@@ -68,12 +77,14 @@ class GetStartedPage extends StatelessWidget {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(66)),
                             onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => SignInPage()
-                                )
-                              );
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //       builder: (context) => SignInPage()
+                              //   )
+                              // );
+                              Navigator.pushNamedAndRemoveUntil(
+                                  context, '/sign-in', (route) => false);
                             },
                             child: Text(
                               'Sign In',

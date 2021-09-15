@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_future_jobs/models/job_model.dart';
 import 'package:flutter_future_jobs/theme.dart';
 
 class DetailPage extends StatefulWidget {
+  final JobModel job;
+  DetailPage(this.job);
+
   @override
   _DetailPageState createState() => _DetailPageState();
 }
@@ -63,14 +67,82 @@ class _DetailPageState extends State<DetailPage> {
         padding: EdgeInsets.fromLTRB(50, 5, 50, 5),
         margin: EdgeInsets.only(bottom: 20),
         decoration: BoxDecoration(
-          color: Color(0xffECEDF1),
-          borderRadius: BorderRadius.circular(20)
-        ),
+            color: Color(0xffECEDF1), borderRadius: BorderRadius.circular(20)),
         child: Text(
           'You have applied this job and the recruiter will contact you immediately',
           textAlign: TextAlign.center,
           style: darkGreyTextStyle,
         ),
+      );
+    }
+
+    Widget detailItem(String text) {
+      return Container(
+        margin: EdgeInsets.only(top: 16),
+        child: Row(
+          children: [
+            Image.asset(
+              'assets/dot_detail.png',
+              width: 12,
+            ),
+            SizedBox(
+              width: 8,
+            ),
+            Flexible(
+              child: Text(
+                text,
+                style: requirementTextStyle,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    Widget about() {
+      return Container(
+        margin: EdgeInsets.only(bottom: 30),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(
+            'About the job',
+            style: blackTextStyle.copyWith(fontWeight: medium),
+          ),
+          Column(
+              children:
+                  widget.job.about.map((text) => detailItem(text)).toList())
+        ]),
+      );
+    }
+
+    Widget qualification() {
+      return Container(
+        margin: EdgeInsets.only(bottom: 30),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(
+            'Qualification',
+            style: blackTextStyle.copyWith(fontWeight: medium),
+          ),
+          Column(
+              children: widget.job.qualifications
+                  .map((text) => detailItem(text))
+                  .toList())
+        ]),
+      );
+    }
+
+    Widget responsibilities() {
+      return Container(
+        margin: EdgeInsets.only(bottom: 30),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(
+            'Responsibilities',
+            style: blackTextStyle.copyWith(fontWeight: medium),
+          ),
+          Column(
+              children: widget.job.responsibilities
+                  .map((text) => detailItem(text))
+                  .toList())
+        ]),
       );
     }
 
@@ -85,16 +157,16 @@ class _DetailPageState extends State<DetailPage> {
                   SizedBox(
                     height: 80,
                   ),
-                  isApplied ? successAppliedMessages() : SizedBox() ,
-                  Image.asset(
-                    'assets/company1.png',
+                  isApplied ? successAppliedMessages() : SizedBox(),
+                  Image.network(
+                    widget.job.companyLogo,
                     width: 60,
                   ),
                   SizedBox(
                     height: 20,
                   ),
                   Text(
-                    'Front-End Developer',
+                    widget.job.name,
                     style: blackTextStyle.copyWith(
                         fontWeight: semibold, fontSize: 20),
                   ),
@@ -102,165 +174,17 @@ class _DetailPageState extends State<DetailPage> {
                     height: 2,
                   ),
                   Text(
-                    'Google, Inc • Jakarta',
+                    '${widget.job.companyName} • ${widget.job.location}',
                     style: greyTextStyle,
                   ),
                 ],
               ),
             ),
-            SizedBox(
-              height: 30,
-            ),
+            //LANJUTAN
             Padding(
-              padding: EdgeInsets.only(left: 24),
+              padding: const EdgeInsets.only(left: 24),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'About the job',
-                    style: blackTextStyle.copyWith(fontWeight: medium),
-                  ),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  Row(
-                    children: [
-                      Image.asset(
-                        'assets/dot_detail.png',
-                        width: 12,
-                      ),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Text(
-                        'Full-Time On Site',
-                        style: requirementTextStyle,
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  Row(
-                    children: [
-                      Image.asset(
-                        'assets/dot_detail.png',
-                        width: 12,
-                      ),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Text(
-                        'Start at \$18,000 per month',
-                        style: requirementTextStyle,
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Text(
-                    'Qualifications',
-                    style: blackTextStyle.copyWith(fontWeight: medium),
-                  ),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  Row(
-                    children: [
-                      Image.asset(
-                        'assets/dot_detail.png',
-                        width: 12,
-                      ),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Text(
-                        "Candidate must possess at least a \nBachelor's Degree.",
-                        style: requirementTextStyle,
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  Row(
-                    children: [
-                      Image.asset(
-                        'assets/dot_detail.png',
-                        width: 12,
-                      ),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Text(
-                        'Able to use Microsoft Office and Google \nbased service.',
-                        style: requirementTextStyle,
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  Row(
-                    children: [
-                      Image.asset(
-                        'assets/dot_detail.png',
-                        width: 12,
-                      ),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Text(
-                        'Have an excellent time management, \ngood at organized and details',
-                        style: requirementTextStyle,
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Text(
-                    'Responsibilities',
-                    style: blackTextStyle.copyWith(fontWeight: medium),
-                  ),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  Row(
-                    children: [
-                      Image.asset(
-                        'assets/dot_detail.png',
-                        width: 12,
-                      ),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Text(
-                        "Initiate and promote any programs, events, \ntraining, or activities..",
-                        style: requirementTextStyle,
-                      )
-                    ],
-                  ),
-                  SizedBox(
-                    height: 16,
-                  ),
-                  Row(
-                    children: [
-                      Image.asset(
-                        'assets/dot_detail.png',
-                        width: 12,
-                      ),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      Text(
-                        'Assessing and anticipating needs and \ncollaborate with Division.',
-                        style: requirementTextStyle,
-                      )
-                    ],
-                  ),
-                ],
+                children: [about(), qualification(), responsibilities()],
               ),
             ),
             SizedBox(

@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_future_jobs/models/category_model.dart';
+import 'package:flutter_future_jobs/models/job_model.dart';
+import 'package:flutter_future_jobs/provider/job_provider.dart';
 import 'package:flutter_future_jobs/theme.dart';
 import 'package:flutter_future_jobs/widgets/custom_list.dart';
+import 'package:provider/provider.dart';
 
-class SecondHomePage extends StatelessWidget {
-  final String jobTitleHome;
-  final String imageurl;
+class CategoryPage extends StatelessWidget {
+  final CategoryModel category;
 
-  SecondHomePage({
-    required this.jobTitleHome, 
-    required this.imageurl
-    });
+  CategoryPage(this.category);
 
   @override
   Widget build(BuildContext context) {
+    var jobProvider = Provider.of<JobProvider>(context);
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -26,8 +28,8 @@ class SecondHomePage extends StatelessWidget {
                     child: Container(
                       width: double.infinity,
                       height: 320,
-                      child: Image.asset(
-                        imageurl,
+                      child: Image.network(
+                        category.imageUrl,
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -38,7 +40,7 @@ class SecondHomePage extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          jobTitleHome,
+                          category.name,
                           style: whiteTextStyle.copyWith(
                               fontWeight: semibold, fontSize: 24),
                         ),
@@ -64,21 +66,19 @@ class SecondHomePage extends StatelessWidget {
                       SizedBox(
                         height: 16,
                       ),
-                      Column(
-                        children: [
-                          CustomList(
-                              imageurl: 'assets/company1.png',
-                              jobTitle: 'Front-End Developer',
-                              company: 'Google'),
-                          CustomList(
-                              imageurl: 'assets/company2.png',
-                              jobTitle: 'UI Designer',
-                              company: 'Instagram'),
-                          CustomList(
-                              imageurl: 'assets/company3.png',
-                              jobTitle: 'Data Scientist',
-                              company: 'Facebook'),
-                        ],
+                      FutureBuilder<List<JobModel>>(
+                        future: jobProvider.getJobsByCategory(category.name),
+                        builder: (context, AsyncSnapshot snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.done) {
+                            return Column(
+                              children: snapshot.data
+                                  .map<Widget>((job) => CustomList(job))
+                                  .toList(),
+                            );
+                          }
+                          return Center(child: CircularProgressIndicator());
+                        },
                       )
                     ],
                   ),
@@ -97,21 +97,19 @@ class SecondHomePage extends StatelessWidget {
                       SizedBox(
                         height: 16,
                       ),
-                      Column(
-                        children: [
-                          CustomList(
-                              imageurl: 'assets/company1.png',
-                              jobTitle: 'Front-End Developer',
-                              company: 'Google'),
-                          CustomList(
-                              imageurl: 'assets/company2.png',
-                              jobTitle: 'UI Designer',
-                              company: 'Instagram'),
-                          CustomList(
-                              imageurl: 'assets/company3.png',
-                              jobTitle: 'Data Scientist',
-                              company: 'Facebook'),
-                        ],
+                      FutureBuilder<List<JobModel>>(
+                        future: jobProvider.getJobsByCategory(category.name),
+                        builder: (context, AsyncSnapshot snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.done) {
+                            return Column(
+                              children: snapshot.data
+                                  .map<Widget>((job) => CustomList(job))
+                                  .toList(),
+                            );
+                          }
+                          return Center(child: CircularProgressIndicator());
+                        },
                       )
                     ],
                   ),
